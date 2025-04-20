@@ -5,6 +5,7 @@ import OverviewPage from './pages/OverviewPage';
 import Sidebar from './components/common/Sidebar';
 import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
+import SalesPage from './pages/SalesPage';
 
 function App() {
 
