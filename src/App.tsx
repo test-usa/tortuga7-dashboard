@@ -22,9 +22,9 @@ function App() {
       <Route path='/products' element={<ProductsPage />} />
       <Route path='/users' element={<UsersPage />} />
       <Route path='/settings' element={<SettingsPage />} />
-      {/* <Route path='/sales' element={<SalesPage />} />
+      <Route path='/sales' element={<SalesPage />} />
       <Route path='/orders' element={<OrdersPage />} />
-      <Route path='/analytics' element={<AnalyticsPage />} /> */}
+      <Route path='/analytics' element={<AnalyticsPage />} />
     </Routes>
   </div>
   )
