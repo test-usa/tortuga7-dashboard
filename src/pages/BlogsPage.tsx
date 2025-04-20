@@ -1,4 +1,4 @@
-import AIPoweredInsights from "../components/analytics/AIPoweredInsights";
+import AllBlogs from "../components/blogs/AllBlogs";
 import Header from "../components/common/Header"
 
 
@@ -9,7 +9,7 @@ const BlogsPage = () => {
 
 <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
 
-    <AIPoweredInsights/>
+    <AllBlogs/>
 </main>
     </div>
   )
