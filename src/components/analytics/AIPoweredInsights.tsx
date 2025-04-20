@@ -30,7 +30,7 @@ const AIPoweredInsights = () => {
 			className='bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-6 border border-gray-700'
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 1.0 }}
+			transition={{ delay: 0.7 }}
 		>
 			<h2 className='text-xl font-semibold text-gray-100 mb-4'>AI-Powered Insights</h2>
 			<div className='space-y-4'>
