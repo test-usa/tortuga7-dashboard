@@ -1,12 +1,12 @@
-import axiosInstance from "./api";
+// src/api/auth.ts
+import axios from 'axios';
 
+const BASE_URL = 'https://tortuga7-backend.onrender.com';
 
-export const login = async (email: string, password: string) => {
-  const response = await axiosInstance.post('/auth/login', { email, password });
-  return response.data;
-};
-
-export const register = async (userData: any) => {
-  const response = await axiosInstance.post('/auth/register', userData);
-  return response.data;
+export const loginAdmin = async (email: string, password: string) => {
+  const res = await axios.post(`${BASE_URL}/auth/signin`, {
+    email,
+    password,
+  });
+  return res.data;
 };

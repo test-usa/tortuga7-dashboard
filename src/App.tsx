@@ -9,6 +9,8 @@ import SalesPage from './pages/SalesPage';
 import OrdersPage from './pages/OrdersPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import BlogsPage from './pages/BlogsPage';
+import Login from './pages/Login';
+import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
 
@@ -30,6 +32,15 @@ function App() {
       <Route path='/sales' element={<SalesPage />} />
       <Route path='/orders' element={<OrdersPage />} />
       <Route path='/analytics' element={<AnalyticsPage />} />
+      <Route path="/login" element={<Login />} />
+    <Route
+      path="/dashboard"
+      element={
+        <PrivateRoute>
+          <BlogsPage />
+        </PrivateRoute>
+      }
+    />
     </Routes>
   </div>
   )
