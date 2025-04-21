@@ -12,7 +12,6 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
     title: '',
     content: '',
     image: '',
-    author: '',
   });
 
   useEffect(() => {
@@ -26,7 +25,7 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(blog);
-    setBlog({ title: '', content: '', image: '', author: '' });
+    setBlog({ title: '', content: '', image: '', });
   };
 
   return (
@@ -56,14 +55,14 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
         className='w-full p-2 rounded bg-gray-700 text-white'
         required
       />
-      <input
+      {/* <input
         name='author'
         value={blog.author}
         onChange={handleChange}
         placeholder='Author Name'
         className='w-full p-2 rounded bg-gray-700 text-white'
         required
-      />
+      /> */}
       <button type='submit' className='w-full bg-indigo-600 py-2 rounded text-white'>
         {isEditing ? 'Update Blog' : 'Add Blog'}
       </button>

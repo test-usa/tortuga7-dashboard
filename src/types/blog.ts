@@ -3,7 +3,10 @@ export interface Blog {
     title: string;
     content: string;
     image: string;
-    author: string;
     date?: string;
   }
   
+export type BlogResponse = {
+    data: Blog[];
+    count: number;
+  };
