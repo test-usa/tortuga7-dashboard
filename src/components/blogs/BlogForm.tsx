@@ -12,6 +12,7 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
     title: '',
     content: '',
     image: '',
+    date: "",
   });
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(blog);
-    setBlog({ title: '', content: '', image: '', });
+    setBlog({ title: '', content: '', image: '', date: "", finalWords: ""});
   };
 
   return (
