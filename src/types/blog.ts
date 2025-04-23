@@ -3,11 +3,11 @@ export interface Blog {
     title: string;
     content: string;
     image: string;
-    date?: string;
     finalWords?: string,
-    // createdAt: string,
-    // updatedAt: string
+    createdAt?: string,
+    updatedAt?: string
   }
+  
   
 export type BlogResponse = {
     data: Blog[];

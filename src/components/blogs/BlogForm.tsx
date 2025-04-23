@@ -1,41 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Blog } from '../../types/blog';
+import { createBlog } from '../../api/blog';
+import toast from 'react-hot-toast';
 
-interface BlogFormProps {
-  onSubmit: (blog: Blog) => void;
-  initialData?: Blog;
-  isEditing?: boolean;
-}
-
-const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
+const BlogForm = () => {
   const [blog, setBlog] = useState<Blog>({
     title: '',
     content: '',
+    finalWords: '',
     image: '',
-    date: "",
   });
-
-  useEffect(() => {
-    if (initialData) setBlog(initialData);
-  }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(blog);
-    setBlog({ title: '', content: '', image: '', date: "", finalWords: ""});
+    try {
+      await createBlog(blog);
+      toast.success('Blog posted successfully!');
+      setBlog({ title: '', content: '', finalWords: '', image: '' });
+    } catch (error) {
+      toast.error('Failed to post blog');
+      console.error(error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-4 p-6 bg-gray-800 rounded-xl border border-gray-700'>
+    <form
+      onSubmit={handleSubmit}
+      className='space-y-4 p-6 bg-gray-800 rounded-xl border border-gray-700 max-w-xl mx-auto'
+    >
       <input
         name='title'
         value={blog.title}
         onChange={handleChange}
-        placeholder='Title'
+        placeholder='Blog Title'
         className='w-full p-2 rounded bg-gray-700 text-white'
         required
       />
@@ -48,6 +49,15 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
         className='w-full p-2 rounded bg-gray-700 text-white'
         required
       />
+      <textarea
+        name='finalWords'
+        value={blog.finalWords}
+        onChange={handleChange}
+        placeholder='Final Words'
+        rows={2}
+        className='w-full p-2 rounded bg-gray-700 text-white'
+        required
+      />
       <input
         name='image'
         value={blog.image}
@@ -56,16 +66,8 @@ const BlogForm = ({ onSubmit, initialData, isEditing }: BlogFormProps) => {
         className='w-full p-2 rounded bg-gray-700 text-white'
         required
       />
-      {/* <input
-        name='author'
-        value={blog.author}
-        onChange={handleChange}
-        placeholder='Author Name'
-        className='w-full p-2 rounded bg-gray-700 text-white'
-        required
-      /> */}
       <button type='submit' className='w-full bg-indigo-600 py-2 rounded text-white'>
-        {isEditing ? 'Update Blog' : 'Add Blog'}
+        Post Blog
       </button>
     </form>
   );
