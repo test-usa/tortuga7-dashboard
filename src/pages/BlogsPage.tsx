@@ -87,11 +87,7 @@ const BlogsPage = () => {
   return (
     <div className='p-6 space-y-6 flex-1 overflow-auto relative z-10'>
       <h2 className='text-2xl font-semibold'>Manage Blogs</h2>
-      <BlogForm
-        onSubmit={editBlog ? handleUpdate : handleCreate}
-        initialData={editBlog || undefined}
-        isEditing={!!editBlog}
-      />
+     <BlogForm />
 
       {loading ? (
         <div className='text-center text-gray-400'>Loading blogs...</div>
