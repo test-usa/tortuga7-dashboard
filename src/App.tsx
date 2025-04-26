@@ -11,8 +11,6 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import BlogsPage from "./pages/BlogsPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
-import { useEffect, useState } from "react";
-import { isTokenExpired } from "./utils/checkTokenExpiration";
 import { useAuth } from "./context/AuthContext";
 
 
@@ -53,7 +51,7 @@ function App() {
           }
         />
         <Route
-          path="/products"
+          path="/services"
           element={
             <PrivateRoute>
               <ProductsPage />
