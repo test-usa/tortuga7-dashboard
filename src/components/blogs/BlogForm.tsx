@@ -3,7 +3,11 @@ import { Blog } from '../../types/blog';
 import { createBlog } from '../../api/blog';
 import toast from 'react-hot-toast';
 
-const BlogForm = () => {
+interface BlogFormProps {
+  onSuccess: () => void;
+}
+
+const BlogForm = ({ onSuccess }: BlogFormProps) => {
   const [blog, setBlog] = useState<Blog>({
     title: '',
     content: '',
@@ -21,6 +25,7 @@ const BlogForm = () => {
       await createBlog(blog);
       toast.success('Blog posted successfully!');
       setBlog({ title: '', content: '', finalWords: '', image: '' });
+      onSuccess(); // Close modal and reload
     } catch (error) {
       toast.error('Failed to post blog');
       console.error(error);
@@ -28,10 +33,7 @@ const BlogForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='space-y-4 p-6 bg-gray-800 rounded-xl border border-gray-700 max-w-xl mx-auto'
-    >
+    <form onSubmit={handleSubmit} className='space-y-4'>
       <input
         name='title'
         value={blog.title}

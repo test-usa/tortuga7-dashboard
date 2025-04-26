@@ -15,12 +15,6 @@ export const fetchBlogs = async (): Promise<BlogResponse> => {
   return res.data;
 };
 
-// export const createBlog = async (blog: Blog) => {
-//   const res = await axios.post(`${BASE_URL}/blog`, blog, {
-//     headers: { Authorization: `Bearer ${accessToken}` },
-//   });
-//   return res.data;
-// };
 
 export const createBlog = async (blog: Blog): Promise<Blog> => {
   const response = await fetch(API_URL, {
