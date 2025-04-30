@@ -1,5 +1,4 @@
 import "./App.css";
-import ProductsPage from "./pages/ProductsPage";
 import { Route, Routes } from "react-router";
 import OverviewPage from "./pages/OverviewPage";
 import Sidebar from "./components/common/Sidebar";
@@ -17,17 +16,7 @@ import ServicePage from "./pages/ServicePage";
 
 
 function App() {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { isAuthenticated } = useAuth();
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (token && !isTokenExpired(token)) {
-  //     setIsAuthenticated(true);
-  //   } else {
-  //     setIsAuthenticated(false);
-  //   }
-  // }, []);
 
   return (
     <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">

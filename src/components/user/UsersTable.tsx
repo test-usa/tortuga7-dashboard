@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
 import axios from "axios";
 
 type User = {
@@ -8,18 +7,19 @@ type User = {
 	name: string;
 	email: string;
 	role: string;
-	status: string;
 };
 
 const UsersTable = () => {
-	const [searchTerm, setSearchTerm] = useState("");
 	const [allUsers, setAllUsers] = useState<User[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
+	const API_BASE = "https://tortuga7-backend.onrender.com/users";
+
+	// Fetch users on mount
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
-				const res = await axios.get("https://tortuga7-backend.onrender.com/users");
+				const res = await axios.get(API_BASE);
 				setAllUsers(res.data);
 				setFilteredUsers(res.data);
 			} catch (error) {
@@ -29,15 +29,34 @@ const UsersTable = () => {
 		fetchUsers();
 	}, []);
 
-	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const term = e.target.value.toLowerCase();
-		setSearchTerm(term);
-		const filtered = allUsers.filter(
-			(user) =>
-				user.name.toLowerCase().includes(term) ||
-				user.email.toLowerCase().includes(term)
-		);
-		setFilteredUsers(filtered);
+	// Handle role update
+	const handleToggleRole = async (user: User) => {
+		const newRole = user.role === "ADMIN" ? "CLIENT" : "ADMIN";
+		try {
+			await axios.patch(`${API_BASE}/${user.id}`, { role: newRole });
+			const updatedUsers = allUsers.map((u) =>
+				u.id === user.id ? { ...u, role: newRole } : u
+			);
+			setAllUsers(updatedUsers);
+			setFilteredUsers(updatedUsers);
+		} catch (error) {
+			console.error("Failed to update role:", error);
+		}
+	};
+
+	// Handle delete
+	const handleDelete = async (userId: string) => {
+		const confirm = window.confirm("Are you sure you want to delete this user?");
+		if (!confirm) return;
+
+		try {
+			await axios.delete(`${API_BASE}/${userId}`);
+			const updatedUsers = allUsers.filter((user) => user.id !== userId);
+			setAllUsers(updatedUsers);
+			setFilteredUsers(updatedUsers);
+		} catch (error) {
+			console.error("Failed to delete user:", error);
+		}
 	};
 
 	return (
@@ -49,37 +68,16 @@ const UsersTable = () => {
 		>
 			<div className='flex justify-between items-center mb-6'>
 				<h2 className='text-xl font-semibold text-gray-100'>Users</h2>
-				{/* <div className='relative'>
-					<input
-						type='text'
-						placeholder='Search users...'
-						className='bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-						value={searchTerm}
-						onChange={handleSearch}
-					/>
-					<Search className='absolute left-3 top-2.5 text-gray-400' size={18} />
-				</div> */}
 			</div>
 
 			<div className='overflow-x-auto'>
 				<table className='min-w-full divide-y divide-gray-700'>
 					<thead>
 						<tr>
-							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-								Name
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-								Email
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-								Role
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-								Status
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-								Actions
-							</th>
+							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>Name</th>
+							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>Email</th>
+							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>Role</th>
+							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>Actions</th>
 						</tr>
 					</thead>
 
@@ -93,41 +91,36 @@ const UsersTable = () => {
 							>
 								<td className='px-6 py-4 whitespace-nowrap'>
 									<div className='flex items-center'>
-										<div className='flex-shrink-0 h-10 w-10'>
-											<div className='h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold'>
-												{user.name?.charAt(0)}
-											</div>
+										<div className='h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold'>
+											{user.name?.charAt(0)}
 										</div>
-										<div className='ml-4'>
-											<div className='text-sm font-medium text-gray-100'>{user.name}</div>
-										</div>
+										<div className='ml-4 text-sm font-medium text-gray-100'>{user.name}</div>
 									</div>
 								</td>
 
 								<td className='px-6 py-4 whitespace-nowrap'>
 									<div className='text-sm text-gray-300'>{user.email}</div>
 								</td>
+
 								<td className='px-6 py-4 whitespace-nowrap'>
 									<span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-800 text-blue-100'>
 										{user.role}
 									</span>
 								</td>
 
-								<td className='px-6 py-4 whitespace-nowrap'>
-									<span
-										className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-											user.status === "Active"
-												? "bg-green-800 text-green-100"
-												: "bg-red-800 text-red-100"
-										}`}
-									>
-										{user.status}
-									</span>
-								</td>
-
 								<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
-									<button className='text-indigo-400 hover:text-indigo-300 mr-2'>Edit</button>
-									<button className='text-red-400 hover:text-red-300'>Delete</button>
+									<button
+										onClick={() => handleToggleRole(user)}
+										className='text-indigo-400 hover:text-indigo-300 mr-2'
+									>
+										Make {user.role === "ADMIN" ? "Client" : "Admin"}
+									</button>
+									<button
+										onClick={() => handleDelete(user.id)}
+										className='text-red-400 hover:text-red-300'
+									>
+										Delete
+									</button>
 								</td>
 							</motion.tr>
 						))}
