@@ -6,6 +6,9 @@ import ProductsTable from "../components/products/ProductsTable";
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
+import CreateSpecForm from "../components/spec/CreateSpecForm";
+import ProductList from "../components/products/ProductList";
+import ProductForm from "../components/products/ProductForm";
 
 const ProductsPage = () => {
 	return (
@@ -13,8 +16,14 @@ const ProductsPage = () => {
 			<Header title='Products' />
 
 			<main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
-				{/* STATS */}
-				<motion.div
+				STATS
+
+				<ProductList/>
+				<ProductForm/>
+				<CreateSpecForm/>
+				{/* <CreateSpecForm/> */}
+
+				{/* <motion.div
 					className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8'
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -26,13 +35,13 @@ const ProductsPage = () => {
 					<StatCard name='Total Revenue' icon={DollarSign} value={"$543,210"} color='#EF4444' />
 				</motion.div>
 
-				<ProductsTable />
+				<ProductsTable /> */}
 
 				{/* CHARTS */}
-				<div className='grid grid-col-1 lg:grid-cols-2 gap-8'>
+				{/* <div className='grid grid-col-1 lg:grid-cols-2 gap-8'>
 					<SalesTrendChart />
 					<CategoryDistributionChart />
-				</div>
+				</div> */}
 			</main>
 		</div>
 	);

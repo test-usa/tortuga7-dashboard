@@ -32,7 +32,7 @@ export default function CreateSpecForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-white rounded-md shadow-md">
+    <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-black rounded-md shadow-md">
       <h2 className="text-xl font-bold">Create New Spec</h2>
 
       <div className="space-y-2">
@@ -45,14 +45,14 @@ export default function CreateSpecForm() {
               placeholder="Spec Name (e.g. CPU)"
               value={spec.key}
               onChange={(e) => handleSpecChange(index, "key", e.target.value)}
-              className="input input-bordered w-1/2"
+              className="input input-bordered w-1/2 text-black"
             />
             <input
               type="text"
               placeholder="Spec Value (e.g. Intel i7)"
               value={spec.value}
               onChange={(e) => handleSpecChange(index, "value", e.target.value)}
-              className="input input-bordered w-1/2"
+              className="input input-bordered w-1/2 text-black"
             />
           </div>
         ))}
@@ -62,7 +62,7 @@ export default function CreateSpecForm() {
         </button>
       </div>
 
-      <button type="submit" className="btn btn-primary w-full">
+      <button type="submit" className="btn bg-blue-400 w-full">
         Create Spec
       </button>
     </form>
