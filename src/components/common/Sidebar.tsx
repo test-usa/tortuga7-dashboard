@@ -2,6 +2,7 @@ import {
   BarChart2,
   DollarSign,
   LetterText,
+  LogOut,
   Menu,
   Settings,
   ShoppingBag,
@@ -32,14 +33,14 @@ const SIDEBAR_ITEMS = [
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const {logout} = useAuth()
+  const { logout } = useAuth();
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     navigate("/login");
-	logout()
+    logout();
   };
 
   return (
@@ -54,7 +55,7 @@ const Sidebar = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 rounded-full hover:bg-gray-700 transition-colors max-w-fit"
+          className="p-2 rounded-full hover:bg-gray-700 transition-colors max-w-fit cursor-pointer"
         >
           <Menu size={24} />
         </motion.button>
@@ -85,12 +86,32 @@ const Sidebar = () => {
           ))}
         </nav>
 
-        <button
+        <motion.div
+          onClick={handleLogout}
+          className="flex items-center p-4 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors mb-2 cursor-pointer"
+        >
+          <LogOut size={20} style={{ color: "red", minWidth: "20px" }} />
+          <AnimatePresence>
+            {isSidebarOpen && (
+              <motion.span
+                className="ml-4 whitespace-nowrap"
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: "auto" }}
+                exit={{ opacity: 0, width: 0 }}
+                transition={{ duration: 0.2, delay: 0.3 }}
+              >
+                Logout
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* <button
           onClick={handleLogout}
           className="mt-4 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white font-medium"
         >
           Logout
-        </button>
+        </button> */}
       </div>
     </motion.div>
   );
