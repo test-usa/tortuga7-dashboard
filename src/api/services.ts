@@ -1,12 +1,11 @@
-import axiosInstance from "./api";
-
+import api from "./api";
 
 export const getAllServices = async () => {
-  const res = await axiosInstance.get('/services');
+  const res = await api.get("/services");
   return res.data;
 };
 
 export const createService = async (serviceData: any) => {
-  const res = await axiosInstance.post('/services', serviceData);
+  const res = await api.post("/services", serviceData);
   return res.data;
 };

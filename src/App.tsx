@@ -1,5 +1,4 @@
 import "./App.css";
-import ProductsPage from "./pages/ProductsPage";
 import { Route, Routes } from "react-router";
 import OverviewPage from "./pages/OverviewPage";
 import Sidebar from "./components/common/Sidebar";
@@ -12,8 +11,9 @@ import BlogsPage from "./pages/BlogsPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import { useAuth } from "./context/AuthContext";
-
-
+import ServicesPage from "./pages/ServicesPage";
+import ProductsPage from "./pages/ProductsPage";
+import SingleProductPage from "./pages/SingleProductPage";
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,7 +54,23 @@ function App() {
           path="/services"
           element={
             <PrivateRoute>
+              <ServicesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/service/:id"
+          element={
+            <PrivateRoute>
               <ProductsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <PrivateRoute>
+              <SingleProductPage />
             </PrivateRoute>
           }
         />

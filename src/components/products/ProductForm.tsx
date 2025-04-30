@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 
 import { useParams, useNavigate } from "react-router-dom"; // if using react-router
 import { Product } from "../../types/type";
-import { createProduct, getProductById, updateProduct } from "../../api/productService";
+import {
+  createProduct,
+  getProductById,
+  updateProduct,
+} from "../../api/productService";
 
 export default function ProductForm() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
+
   const [form, setForm] = useState<Partial<Product>>({
     productName: "",
     productModel: "",
@@ -21,7 +25,7 @@ export default function ProductForm() {
     images: [],
     price: 0,
     available: true,
-    serviceName: ""
+    serviceName: "",
   });
 
   useEffect(() => {
@@ -35,7 +39,9 @@ export default function ProductForm() {
     setForm(data);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -52,7 +58,9 @@ export default function ProductForm() {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{id ? "Update" : "Create"} Product</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {id ? "Update" : "Create"} Product
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -95,7 +103,8 @@ export default function ProductForm() {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded">
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
           {id ? "Update" : "Create"}
         </button>
       </form>
