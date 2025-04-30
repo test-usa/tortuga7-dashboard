@@ -12,6 +12,7 @@ import BlogsPage from "./pages/BlogsPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import { useAuth } from "./context/AuthContext";
+import ServicePage from "./pages/ServicePage";
 
 
 
@@ -54,7 +55,8 @@ function App() {
           path="/services"
           element={
             <PrivateRoute>
-              <ProductsPage />
+              {/* <ProductsPage /> */}
+              <ServicePage/>
             </PrivateRoute>
           }
         />
