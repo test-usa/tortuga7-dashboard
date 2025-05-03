@@ -11,9 +11,9 @@ import BlogsPage from "./pages/BlogsPage";
 import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import { useAuth } from "./context/AuthContext";
-import ServicePage from "./pages/ServicePage";
-
-
+import ServicesPage from "./pages/ServicesPage";
+import ProductsPage from "./pages/ProductsPage";
+import SingleProductPage from "./pages/SingleProductPage";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -44,8 +44,23 @@ function App() {
           path="/services"
           element={
             <PrivateRoute>
-              {/* <ProductsPage /> */}
-              <ServicePage/>
+              <ServicesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/service/:id"
+          element={
+            <PrivateRoute>
+              <ProductsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <PrivateRoute>
+              <SingleProductPage />
             </PrivateRoute>
           }
         />
