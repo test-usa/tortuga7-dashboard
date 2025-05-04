@@ -44,25 +44,25 @@ const productsList = () => {
 
     console.log(productInfo);
 
-    // try {
-    //   setLoading(true);
-    //   const res = await api.post(`/products`, productInfo);
-    //   if (res.status !== 200) toast.error("Network response was not ok");
-    //   toast.success("Specification updated successfully!");
-    //   reset();
-    //   setImages([])
-    //   setKeyApplications([])
-    //   setKeyFeatures([])
-    //   productsRefetch();
-    //   setShowModal(false);
-    // } catch (error: any) {
-    //   const errorMessage =
-    //     error.response?.data?.message ||
-    //     "Failed to update specification details";
-    //   toast.error(errorMessage);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      const res = await api.post(`/products`, productInfo);
+      if (res.status !== 200) toast.error("Network response was not ok");
+      toast.success("Specification updated successfully!");
+      reset();
+      setImages([])
+      setKeyApplications([])
+      setKeyFeatures([])
+      productsRefetch();
+      setShowModal(false);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to update specification details";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

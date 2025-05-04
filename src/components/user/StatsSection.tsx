@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import StatCard from "../common/StatCard";
 
 
-interface User {
+export interface User {
 	id: string;
 	name: string;
 	email: string;
@@ -23,7 +23,7 @@ const StatsSection = () => {
 	});
 
 	useEffect(() => {
-		const fetchUsers = async () => {
+	 	const fetchUsers = async () => {
 			try {
 				const { data } = await axios.get<User[]>("https://tortuga7-backend.onrender.com/users");
 

@@ -1,5 +1,4 @@
 import ServicesList from "../components/services/ServicesList";
-import ServicesForm from "../components/services/ServicesForm";
 import Header from "../components/common/Header";
 
 const ServicesPage = () => {
@@ -9,7 +8,6 @@ const ServicesPage = () => {
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <ServicesList />
-        <ServicesForm />
       </main>
     </div>
   );
