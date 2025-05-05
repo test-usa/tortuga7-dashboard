@@ -18,16 +18,14 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
     <div className="relative border rounded-lg p-5">
       <p className="text-lg font-semibold">{title}</p>
       <p className="text-sm">{description}</p>
-      <p className="mt-5">
-        Products:{" "}
-        <ul className="mb-5">
-          {products.map((product) => (
-            <li className="text-sm ml-5 list-disc">
-              <p>{product.productName}</p>
-            </li>
-          ))}
-        </ul>
-      </p>
+      <p className="mt-5">Products: </p>
+      <ul className="mb-5">
+        {products.map((product, index) => (
+          <li key={index} className="text-sm ml-5 list-disc">
+            {product.productName}
+          </li>
+        ))}
+      </ul>
       <Link
         to={`/service/${id}`}
         className="px-5 py-2 rounded-lg border hover:border-purple-500 cursor-pointer max-w-40 text-center  hover:bg-purple-500 duration-300"
