@@ -4,7 +4,7 @@ import { TProduct } from "../../types/service";
 import SingleProductBox from "./SingleProductBox";
 import { useParams } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../../api/api";
 import toast from "react-hot-toast";
@@ -16,9 +16,16 @@ const productsList = () => {
   );
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState<string[]>([""]);
   const [keyFeatures, setKeyFeatures] = useState<string[]>([""]);
   const [keyApplications, setKeyApplications] = useState<string[]>([""]);
+  const productImagesRef = useRef<HTMLInputElement | null>(null);
+  const [filters, setFilters] = useState([{ name: "", value: "" }]);
+  const [productImages, setProductImages] = useState<
+    {
+      file: File;
+      preview: string;
+    }[]
+  >([]);
 
   const {
     register,
@@ -28,41 +35,77 @@ const productsList = () => {
   } = useForm<TProduct>();
 
   const handleAddProduct = async (data: TProduct) => {
-    const productInfo = {
-      productName: data.productName,
-      productModel: data.productModel,
-      brandName: data.brandName,
-      slug: data.slug,
-      description: data.description,
-      price: data.price,
-      available: true,
-      serviceId: id,
-      images,
-      keyFeatures,
-      keyApplications,
-    };
+    const formData = new FormData();
+    formData.append("productName", data.productName);
+    formData.append("productModel", data.productModel);
+    formData.append("brandName", data.brandName);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("price", data.price.toString());
+    formData.append("available", "true");
+    formData.append("serviceId", id as string);
+    formData.append("keyFeatures", JSON.stringify(keyFeatures));
+    formData.append("keyApplications", JSON.stringify(keyApplications));
+    formData.append("filters", JSON.stringify(filters));
+    productImages.forEach((image) => formData.append("images", image.file));
+    productImages.forEach((image) => console.log("images", image.file));
 
-    console.log(productInfo);
+    try {
+      setLoading(true);
+      const res = await api.post(`/products`, formData);
+      if (res.status !== 200) toast.error("Network response was not ok");
+      toast.success("Specification updated successfully!");
+      reset();
+      setKeyApplications([]);
+      setKeyFeatures([]);
+      setProductImages([]);
+      setFilters([]);
+      productsRefetch();
+      setShowModal(false);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to update specification details";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // try {
-    //   setLoading(true);
-    //   const res = await api.post(`/products`, productInfo);
-    //   if (res.status !== 200) toast.error("Network response was not ok");
-    //   toast.success("Specification updated successfully!");
-    //   reset();
-    //   setImages([])
-    //   setKeyApplications([])
-    //   setKeyFeatures([])
-    //   productsRefetch();
-    //   setShowModal(false);
-    // } catch (error: any) {
-    //   const errorMessage =
-    //     error.response?.data?.message ||
-    //     "Failed to update specification details";
-    //   toast.error(errorMessage);
-    // } finally {
-    //   setLoading(false);
-    // }
+  const handleMultipleImages = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles = Array.from(files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    if (newFiles.length !== files.length) {
+      toast.error("Some files were not images and were not selected");
+    }
+
+    const remainingSlots = 10 - productImages.length;
+    if (remainingSlots <= 0) {
+      toast.error("You've reached the maximum of 10 images");
+      return;
+    }
+
+    const filesToAdd = newFiles.slice(0, remainingSlots);
+    if (filesToAdd.length < newFiles.length) {
+      toast.error(
+        `Only ${remainingSlots} more images can be added (max 10 total)`
+      );
+    }
+    const newFilesWithPreviews = filesToAdd.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setProductImages([...productImages, ...newFilesWithPreviews]);
+
+    if (productImagesRef.current) {
+      productImagesRef.current.value = "";
+    }
   };
 
   return (
@@ -96,7 +139,7 @@ const productsList = () => {
       <AnimatePresence>
         {showModal && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            className="fixed inset-0 z-50 flex items-center justify-center px-4 overflow-y-scroll"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -237,46 +280,51 @@ const productsList = () => {
                     </p>
                   )}
                 </div>
-
                 {/* Images */}
-                <div className="col-span-2 flex flex-col gap-3 my-5">
-                  <label className="text-sm font-medium">
-                    Images <span className="text-red-500 ml-1">*</span>
+                <div className="mt-6 col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Product Images (Max 10)
                   </label>
-
-                  {images.map((spec, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        placeholder="Image url"
-                        className="w-full border p-2 rounded-md focus:outline-none focus:border-btn"
-                        value={spec}
-                        onChange={(e) => {
-                          const updated = [...images];
-                          updated[index] = e.target.value;
-                          setImages(updated);
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (images.length > 1) {
-                            setImages(images.filter((_, i) => i !== index));
-                          }
-                        }}
-                        className="h-5 w-5 rounded-lg flex items-center justify-center border border-red-500 text-red-500"
-                      >
-                        <X className="size-3" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setImages([...images, ""])}
-                        className="h-5 w-5 rounded-lg flex items-center justify-center border border-green-500 text-green-500"
-                      >
-                        <Plus className="size-3" />
-                      </button>
+                  {productImages.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {productImages.map((image, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={image.preview}
+                            alt={`Product Preview ${index + 1}`}
+                            className="w-20 h-20 object-cover rounded-lg border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setProductImages((prev) => {
+                                URL.revokeObjectURL(prev[index].preview);
+                                return prev.filter((_, i) => i !== index);
+                              })
+                            }
+                            className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white"
+                          >
+                            <X className="size-3" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    ref={productImagesRef}
+                    onChange={handleMultipleImages}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    className="w-full mt-1 p-2 border rounded outline-none focus:border-green-500 dark:border-shadow"
+                    onClick={() => productImagesRef.current?.click()}
+                  >
+                    Add Product Images
+                  </button>
                 </div>
 
                 {/* Key Features */}
@@ -359,6 +407,63 @@ const productsList = () => {
                         type="button"
                         onClick={() =>
                           setKeyApplications([...keyApplications, ""])
+                        }
+                        className="h-5 w-5 rounded-lg flex items-center justify-center border border-green-500 text-green-500"
+                      >
+                        <Plus className="size-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Filters Section */}
+                <div className="col-span-2 flex flex-col gap-3 my-5">
+                  <label className="text-sm font-medium">
+                    Filters <span className="text-red-500 ml-1">*</span>
+                  </label>
+
+                  {filters.map((filter, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-wrap items-center gap-2"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Filter Name (e.g., cpuType)"
+                        className="flex-1 min-w-[120px] border p-2 rounded-md focus:outline-none focus:border-btn"
+                        value={filter.name}
+                        onChange={(e) => {
+                          const updated = [...filters];
+                          updated[index].name = e.target.value;
+                          setFilters(updated);
+                        }}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Filter Value (e.g., Intel® Xeon® Gold)"
+                        className="flex-1 min-w-[120px] border p-2 rounded-md focus:outline-none focus:border-btn"
+                        value={filter.value}
+                        onChange={(e) => {
+                          const updated = [...filters];
+                          updated[index].value = e.target.value;
+                          setFilters(updated);
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (filters.length > 1) {
+                            setFilters(filters.filter((_, i) => i !== index));
+                          }
+                        }}
+                        className="h-5 w-5 rounded-lg flex items-center justify-center border border-red-500 text-red-500"
+                      >
+                        <X className="size-3" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFilters([...filters, { name: "", value: "" }])
                         }
                         className="h-5 w-5 rounded-lg flex items-center justify-center border border-green-500 text-green-500"
                       >
