@@ -1,6 +1,5 @@
 import {
   BarChart2,
-  DollarSign,
   LetterText,
   LogOut,
   Menu,

@@ -19,7 +19,7 @@
 
 import { useEffect, useState } from "react";
 import { Blog, BlogResponse } from "../types/blog";
-import { fetchBlogs, updateBlog, deleteBlog } from "../api/blog";
+import { fetchBlogs, deleteBlog } from "../api/blog";
 import toast from "react-hot-toast";
 import BlogForm from "../components/blogs/BlogForm";
 import Header from "../components/common/Header";
@@ -27,7 +27,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState<BlogResponse | null>(null);
-  const [editBlog, setEditBlog] = useState<Blog | null>(null);
+  const [, setEditBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 

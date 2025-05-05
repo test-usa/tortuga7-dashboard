@@ -5,11 +5,9 @@ import { motion } from "framer-motion";
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
-import SalesOverviewChart from "../components/overview/SalesOverviewChart";
+// import SalesOverviewChart from "../components/overview/SalesOverviewChart";
 import SalesChannelChart from "../components/overview/SalesChannelChart";
-import useUsers from "../hooks/useUsers";
-import axios from "axios";
-import { User } from "../components/user/StatsSection";
+
 
 const OverviewPage =  () => {
 	const [products, setProducts] = useState([]);
