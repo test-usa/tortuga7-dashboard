@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 import { Trash } from "lucide-react";
 import { TProduct } from "../../types/service";
+import Swal from "sweetalert2";
+import api from "../../api/api";
+import toast from "react-hot-toast";
 
 type TProductData = {
   product: TProduct;
@@ -8,28 +11,33 @@ type TProductData = {
 };
 
 const SingleProductBox = ({ product, refetch }: TProductData) => {
-  const {
-    id,
-    productName,
-    productModel,
-    brandName,
-    // slug,
-    description,
-    // filters,
-    // keyApplications,
-    // keyFeatures,
-    // images,
-    price,
-    // available,
-    // serviceId,
-    // createdAt,
-    // updatedAt,
-    // specs,
-  } = product;
+  const { id, productName, productModel, brandName, description, price } =
+    product;
 
   const handleProductDelete = () => {
-    console.log(id);
-    refetch();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
+          .delete(`/products/${id}`)
+          .then((res) => {
+            if (res.status === 200) {
+              refetch();
+              Swal.fire("Deleted!", "A Product has been deleted.", "success");
+            }
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message || "Something went wrong!");
+          });
+      }
+    });
   };
   return (
     <div className="relative border rounded-lg p-5">
@@ -44,6 +52,7 @@ const SingleProductBox = ({ product, refetch }: TProductData) => {
       >
         View More
       </Link>
+
       <div
         onClick={handleProductDelete}
         className="absolute top-2 right-2 cursor-pointer"
