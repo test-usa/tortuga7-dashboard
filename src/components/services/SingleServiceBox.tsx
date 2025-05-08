@@ -39,7 +39,7 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
     });
   };
   return (
-    <div className="relative border rounded-lg p-5">
+    <div className="relative border bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border-gray-700">
       <p className="text-lg font-semibold">{title}</p>
       <p className="text-sm">{description}</p>
       <p className="mt-5">Products: </p>
@@ -60,7 +60,7 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
         onClick={handleServiceDelete}
         className="absolute top-2 right-2 cursor-pointer"
       >
-        <Trash className="text-red-500 rounded p-1 size-6" />
+        <Trash className="text-red-500 rounded p-1 size-8" />
       </div>
     </div>
   );

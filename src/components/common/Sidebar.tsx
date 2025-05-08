@@ -5,8 +5,8 @@ import {
   Menu,
   Settings,
   ShoppingBag,
-  ShoppingCart,
-  TrendingUp,
+  // ShoppingCart,
+  // TrendingUp,
   Users,
 } from "lucide-react";
 import { useState } from "react";

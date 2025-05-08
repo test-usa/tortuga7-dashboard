@@ -40,7 +40,7 @@ const SingleProductBox = ({ product, refetch }: TProductData) => {
     });
   };
   return (
-    <div className="relative border rounded-lg p-5">
+    <div className="relative bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700">
       <p className="text-lg font-semibold">{productName}</p>
       <p className="text-sm my-1">Model: {productModel}</p>
       <p className="text-sm my-1">Brand: {brandName}</p>
@@ -57,7 +57,7 @@ const SingleProductBox = ({ product, refetch }: TProductData) => {
         onClick={handleProductDelete}
         className="absolute top-2 right-2 cursor-pointer"
       >
-        <Trash className="text-red-500 rounded p-1 size-6" />
+        <Trash className="text-red-500 rounded p-1 size-8" />
       </div>
     </div>
   );

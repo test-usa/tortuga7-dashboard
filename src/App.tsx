@@ -5,7 +5,6 @@ import Sidebar from "./components/common/Sidebar";
 import UsersPage from "./pages/UsersPage";
 import SettingsPage from "./pages/SettingsPage";
 import SalesPage from "./pages/SalesPage";
-import OrdersPage from "./pages/OrdersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import BlogsPage from "./pages/BlogsPage";
 import Login from "./pages/Login";
@@ -93,14 +92,6 @@ function App() {
           element={
             <PrivateRoute>
               <SalesPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <PrivateRoute>
-              <OrdersPage />
             </PrivateRoute>
           }
         />
