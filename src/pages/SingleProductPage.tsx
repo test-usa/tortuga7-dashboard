@@ -115,7 +115,7 @@ const SingleProductPage = () => {
                               className="flex justify-between border-b py-1"
                             >
                               <p className="font-medium">{key}</p>
-                              <p className="text-gray-700">{value}</p>
+                              <p className="text-white">{value}</p>
                             </div>
                           );
                         })}
