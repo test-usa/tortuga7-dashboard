@@ -5,7 +5,7 @@ import {
   Menu,
   Settings,
   ShoppingBag,
-  ShoppingCart,
+  Handshake,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -23,6 +23,12 @@ const SIDEBAR_ITEMS = [
   },
   { name: "Services", icon: ShoppingBag, color: "#8B5CF6", href: "/services" },
   { name: "Users", icon: Users, color: "#EC4899", href: "/users" },
+  {
+    name: "Consultation",
+    icon: Handshake,
+    color: "#FBBF24",
+    href: "/consultations",
+  },
   { name: "Blogs", icon: LetterText, color: "#F59E0B", href: "/blogs" },
   // { name: "Sales", icon: DollarSign, color: "#10B981", href: "/sales" },
   // { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },

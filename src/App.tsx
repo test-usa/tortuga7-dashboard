@@ -14,6 +14,7 @@ import { useAuth } from "./context/AuthContext";
 import ServicesPage from "./pages/ServicesPage";
 import ProductsPage from "./pages/ProductsPage";
 import SingleProductPage from "./pages/SingleProductPage";
+import ConsultationPage from "./pages/ConsultationPage";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -69,6 +70,14 @@ function App() {
           element={
             <PrivateRoute>
               <UsersPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/consultations"
+          element={
+            <PrivateRoute>
+              <ConsultationPage />
             </PrivateRoute>
           }
         />
