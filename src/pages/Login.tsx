@@ -2,7 +2,7 @@ import { useState } from "react";
 import { loginAdmin } from "../api/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
