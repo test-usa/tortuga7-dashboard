@@ -8,6 +8,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../api/api";
 import toast from "react-hot-toast";
+import SpecBox from "../components/products/SpecBox";
+import BasicProductInfo from "../components/singleProduct/BasicProductInfo";
+import ProductKeyFeatures from "../components/singleProduct/ProductKeyFeatures";
+import ProductKeyApplications from "../components/singleProduct/ProductKeyApplications";
 
 const SingleProductPage = () => {
   const params = useParams();
@@ -19,20 +23,7 @@ const SingleProductPage = () => {
     { key: "", value: "" },
   ]);
 
-  const {
-    id,
-    productName,
-    productModel,
-    brandName,
-    // slug,
-    description,
-    // filters,
-    // keyApplications,
-    // keyFeatures,
-    // images,
-    price,
-    specs,
-  } = singleProductData as TProduct;
+  const { id, productName, specs } = singleProductData as TProduct;
 
   const {
     register,
@@ -84,16 +75,23 @@ const SingleProductPage = () => {
             </div>
           ) : singleProductData ? (
             <div className="relative border rounded-lg p-5">
-              <p className="text-lg font-semibold">{productName}</p>
-              <p className="text-sm my-1">Model: {productModel}</p>
-              <p className="text-sm my-1">Brand: {brandName}</p>
-              <p className="text-sm my-1">Price: {price}</p>
-              <p className="text-sm mt-1 mb-5">{description}</p>
+              <BasicProductInfo
+                product={singleProductData}
+                refetch={singleProductRefetch}
+              />
+              <ProductKeyFeatures
+                product={singleProductData}
+                refetch={singleProductRefetch}
+              />
+              <ProductKeyApplications
+                product={singleProductData}
+                refetch={singleProductRefetch}
+              />
 
               {/*  Add Specification */}
               <button
                 onClick={() => setShowModal(true)}
-                className="px-5 py-2 rounded border mb-5"
+                className="px-5 py-2 rounded my-5 bg-purple-500"
               >
                 Add Specification
               </button>
@@ -101,26 +99,7 @@ const SingleProductPage = () => {
               {/* Specification */}
               <div className="grid grid-cols-2 gap-5">
                 {specs.map((spec, i) => (
-                  <div key={i} className="border rounded">
-                    <p className="bg-purple-500 text-white rounded-t p-2">
-                      {spec.title}
-                    </p>
-                    <div>
-                      {spec.data &&
-                        spec?.data?.map((entry, j) => {
-                          const [[key, value]] = Object.entries(entry);
-                          return (
-                            <div
-                              key={j}
-                              className="flex justify-between border-b py-1"
-                            >
-                              <p className="font-medium">{key}</p>
-                              <p className="text-gray-700">{value}</p>
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
+                  <SpecBox key={i} spec={spec} refetch={singleProductRefetch} />
                 ))}
               </div>
             </div>

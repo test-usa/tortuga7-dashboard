@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 import { TService } from "../../types/service";
 import { Trash } from "lucide-react";
+import Swal from "sweetalert2";
+import api from "../../api/api";
+import toast from "react-hot-toast";
 
 type TServiceData = {
   service: TService;
@@ -11,8 +14,29 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
   const { id, title, products, description } = service;
 
   const handleServiceDelete = () => {
-    console.log(id);
-    refetch();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
+          .delete(`/services/${id}`)
+          .then((res) => {
+            if (res.status === 200) {
+              refetch();
+              Swal.fire("Deleted!", "A Service has been deleted.", "success");
+            }
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message || "Something went wrong!");
+          });
+      }
+    });
   };
   return (
     <div className="relative border rounded-lg p-5">
