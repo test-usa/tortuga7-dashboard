@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   Handshake,
   Users,
+  Receipt,
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -22,6 +23,7 @@ const SIDEBAR_ITEMS = [
   },
   { name: "Services", icon: ShoppingBag, color: "#8B5CF6", href: "/services" },
   { name: "Users", icon: Users, color: "#EC4899", href: "/users" },
+  { name: "Bookings", icon: Receipt, color: "#10B981", href: "/bookings" },
   {
     name: "Consultation",
     icon: Handshake,
@@ -29,7 +31,7 @@ const SIDEBAR_ITEMS = [
     href: "/consultations",
   },
   { name: "Blogs", icon: LetterText, color: "#F59E0B", href: "/blogs" },
-  // { name: "Sales", icon: DollarSign, color: "#10B981", href: "/sales" },
+  
   // { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
   // { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },
   { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
