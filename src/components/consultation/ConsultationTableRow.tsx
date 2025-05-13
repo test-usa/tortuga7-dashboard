@@ -2,6 +2,8 @@ import { ChangeEvent, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { TConsultation } from "../../types/consultation";
+import { Trash2 } from "lucide-react"; // optional icon
+import Swal from "sweetalert2";
 
 interface IConsultationData {
   consultation: TConsultation;
@@ -15,6 +17,7 @@ const ConsultationTableRow = ({
   index,
 }: IConsultationData) => {
   const [currentStatus, setCurrentStatus] = useState(consultation.status);
+  const [deleting, setDeleting] = useState(false);
 
   // Consultation state change
   const handleConsultationState = async (e: ChangeEvent<HTMLSelectElement>) => {
@@ -34,8 +37,41 @@ const ConsultationTableRow = ({
       }
     } catch (err: any) {
       console.log(err);
+      toast.error("Something went wrong!");
     }
   };
+
+  // 🔴 DELETE CONSULTATION
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This consultation will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        setDeleting(true);
+        const res = await api.delete(`/consultants/${consultation.id}`);
+        if (res.status === 200 || res.status === 204) {
+          toast.success("Consultation deleted successfully.");
+          refetch();
+        } else {
+          toast.error("Failed to delete consultation.");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Something went wrong during deletion.");
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
 
   return (
     <tr className="text-xs sm:text-sm text-white">
@@ -53,11 +89,11 @@ const ConsultationTableRow = ({
         })}
         , {consultation.preferredTime}
       </td>
-      <td>
+      <td className="flex items-center gap-2 justify-center">
         <select
           value={currentStatus}
           onChange={handleConsultationState}
-          className={`text-xs sm:text-sm text-white rounded-lg px-1 max-w-20 outline-none sm:max-w-none cursor-pointer outine-none ${
+          className={`text-xs sm:text-sm text-white rounded-lg px-1 max-w-20 outline-none sm:max-w-none cursor-pointer ${
             currentStatus === "approved"
               ? "bg-green-500"
               : currentStatus === "rejected"
@@ -67,8 +103,16 @@ const ConsultationTableRow = ({
         >
           <option value="pending">Pending</option>
           <option value="approved">Approved</option>
-          <option value="rejected">rejected</option>
+          <option value="rejected">Rejected</option>
         </select>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="text-red-500 hover:text-red-700"
+          title="Delete Consultation"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
       </td>
     </tr>
   );

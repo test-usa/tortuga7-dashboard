@@ -192,6 +192,7 @@ const ServicesList = () => {
     </motion.div>
   )}
 </AnimatePresence>
+
     </div>
   );
 };
