@@ -13,6 +13,8 @@ const ProductKeyFeatures = ({ product, refetch }: TProductKeyFeatures) => {
   const [isAddFeatureClicked, setIsAddFeatureClicked] = useState(false);
   const [newFeature, setNewFeature] = useState("");
   const features = product.keyFeatures;
+  console.log(typeof features); // ✅ should be 'object' (array), ❌ not 'string'
+  console.log(Array.isArray(features)); // ✅ should be true
 
   const deleteFeature = async (feature: string) => {
     const data = {
@@ -54,6 +56,7 @@ const ProductKeyFeatures = ({ product, refetch }: TProductKeyFeatures) => {
       toast.error(errorMessage);
     }
   };
+
   return (
     <div>
       <p className="text-lg font-semibold mb-2">Key Features</p>
@@ -63,7 +66,9 @@ const ProductKeyFeatures = ({ product, refetch }: TProductKeyFeatures) => {
             key={index}
             className="flex items-center justify-between p-2 border rounded-md group"
           >
-            <p>{feature}</p>
+            <p className="whitespace-pre-line">
+              {index + 1}. {feature}
+            </p>
             <button
               onClick={() => deleteFeature(feature)}
               className="text-red-500 group-hover:block hidden ml-2 cursor-pointer"

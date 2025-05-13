@@ -44,12 +44,27 @@ const productsList = () => {
     formData.append("price", data.price.toString());
     formData.append("available", "true");
     formData.append("serviceId", id as string);
-    formData.append("keyFeatures", JSON.stringify(keyFeatures));
-    formData.append("keyApplications", JSON.stringify(keyApplications));
-    formData.append("filters", JSON.stringify(filters));
-    productImages.forEach((image) => formData.append("images", image.file));
-    productImages.forEach((image) => console.log("images", image.file));
-
+  
+    // ✅ Append each key feature individually
+    keyFeatures.forEach((feature) => {
+      formData.append("keyFeatures", feature);
+    });
+  
+    // ✅ Append each key application individually
+    keyApplications.forEach((app) => {
+      formData.append("keyApplications", app);
+    });
+  
+    // ✅ Same for filters (if your backend expects an array)
+    filters.forEach((filter) => {
+      formData.append("filters", JSON.stringify(filter)); // Adjust if filters is complex
+    });
+  
+    // ✅ Images
+    productImages.forEach((image) =>
+      formData.append("images", image.file)
+    );
+  
     try {
       setLoading(true);
       const res = await api.post(`/products`, formData);
@@ -71,6 +86,7 @@ const productsList = () => {
       setLoading(false);
     }
   };
+  
 
   const handleMultipleImages = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

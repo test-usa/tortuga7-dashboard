@@ -16,6 +16,7 @@ const ProductKeyApplications = ({
   const [isAddApplicationClicked, setIsAddApplicationClicked] = useState(false);
   const [newApplication, setNewApplication] = useState("");
   const applications = product.keyApplications;
+  
 
   // Delete application
   const deleteApplication = async (application: string) => {
@@ -68,7 +69,7 @@ const ProductKeyApplications = ({
             key={index}
             className="flex items-center justify-between p-2 border rounded-md group"
           >
-            <p>{application}</p>
+            <p>{index + 1}. {application}</p>
             <button
               onClick={() => deleteApplication(application)}
               className="text-red-500 group-hover:block hidden ml-2 cursor-pointer"
