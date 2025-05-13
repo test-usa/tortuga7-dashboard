@@ -34,6 +34,52 @@ const productsList = () => {
     formState: { errors },
   } = useForm<TProduct>();
 
+
+
+  // const handleAddProduct = async (data: TProduct) => {
+  //   const formData = new FormData();
+  //   formData.append("productName", data.productName);
+  //   formData.append("productModel", data.productModel);
+  //   formData.append("brandName", data.brandName);
+  //   formData.append("description", data.description);
+  //   formData.append("slug", data.slug);
+  //   formData.append("price", data.price.toString());
+  //   formData.append("available", "true");
+  //   formData.append("serviceId", id as string);
+  //   // formData.append("keyFeatures", JSON.stringify(keyFeatures));
+  //   // formData.append("keyApplications", JSON.stringify(keyApplications));
+  //   keyFeatures.forEach((feature) => {
+  //         formData.append("keyFeatures", feature);
+  //       });
+  //   keyApplications.forEach((app) => {
+  //             formData.append("keyApplications", app);
+  //           });
+  //   formData.append("filters", JSON.stringify(filters));
+  //   productImages.forEach((image) => formData.append("images", image.file));
+  //   productImages.forEach((image) => console.log("images", image.file));
+
+  //   try {
+  //     setLoading(true);
+  //     const res = await api.post("/products", formData);
+  //     if (res.status !== 200) toast.error("Network response was not ok");
+  //     toast.success("Specification updated successfully!");
+  //     reset();
+  //     setKeyApplications([]);
+  //     setKeyFeatures([]);
+  //     setProductImages([]);
+  //     setFilters([]);
+  //     productsRefetch();
+  //     setShowModal(false);
+  //   } catch (error: any) {
+  //     const errorMessage =
+  //       error.response?.data?.message ||
+  //       "Failed to update specification details";
+  //     toast.error(errorMessage);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleAddProduct = async (data: TProduct) => {
     const formData = new FormData();
     formData.append("productName", data.productName);
@@ -68,8 +114,11 @@ const productsList = () => {
     try {
       setLoading(true);
       const res = await api.post(`/products`, formData);
-      if (res.status !== 200) toast.error("Network response was not ok");
-      toast.success("Specification updated successfully!");
+      if (res.status < 200 || res.status >= 300) {
+        toast.error("Network response was not ok");
+        return;
+      }      
+      toast.success("New product uploaded successfully!");
       reset();
       setKeyApplications([]);
       setKeyFeatures([]);
@@ -86,7 +135,6 @@ const productsList = () => {
       setLoading(false);
     }
   };
-  
 
   const handleMultipleImages = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

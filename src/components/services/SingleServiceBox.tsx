@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { TService } from "../../types/service";
-import { Trash } from "lucide-react";
+import { Trash, Pencil } from "lucide-react";
 import Swal from "sweetalert2";
 import api from "../../api/api";
 import toast from "react-hot-toast";
@@ -8,9 +8,10 @@ import toast from "react-hot-toast";
 type TServiceData = {
   service: TService;
   refetch: () => void;
+  onEdit: (service: TService) => void; // ✅ Accept callback for editing
 };
 
-const SingleServiceBox = ({ service, refetch }: TServiceData) => {
+const SingleServiceBox = ({ service, refetch, onEdit }: TServiceData) => {
   const { id, title, products, description } = service;
 
   const handleServiceDelete = () => {
@@ -38,6 +39,11 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
       }
     });
   };
+
+  const handleServiceUpdate = () => {
+    onEdit(service); 
+  };
+
   return (
     <div className="relative border bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border-gray-700">
       <p className="text-lg font-semibold">{title}</p>
@@ -52,15 +58,25 @@ const SingleServiceBox = ({ service, refetch }: TServiceData) => {
       </ul>
       <Link
         to={`/service/${id}`}
-        className="px-5 py-2 rounded-lg border hover:border-purple-500 cursor-pointer max-w-40 text-center  hover:bg-purple-500 duration-300"
+        className="px-5 py-2 rounded-lg border hover:border-purple-500 cursor-pointer max-w-40 text-center hover:bg-purple-500 duration-300"
       >
         View Products
       </Link>
+
+      {/* ✅ Delete Icon */}
       <div
         onClick={handleServiceDelete}
         className="absolute top-2 right-2 cursor-pointer"
       >
         <Trash className="text-red-500 rounded p-1 size-8" />
+      </div>
+
+      {/* ✅ Edit Icon */}
+      <div
+        onClick={handleServiceUpdate}
+        className="absolute top-2 right-12 cursor-pointer"
+      >
+        <Pencil className="text-blue-500 rounded p-1 size-8" />
       </div>
     </div>
   );
